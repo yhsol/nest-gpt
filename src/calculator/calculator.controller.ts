@@ -1,4 +1,11 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { AdditionDTO } from './calculator.dto';
 import { CalculatorService } from './calculator.service';
 
 @Controller('calculator')
@@ -6,22 +13,25 @@ export class CalculatorController {
   constructor(private readonly calculatorService: CalculatorService) {}
 
   @Get('add')
-  add(@Query('a') a: number, @Query('b') b: number): number {
+  add(@Query() { a, b }: AdditionDTO): number {
     return this.calculatorService.add(a, b);
   }
 
   @Get('substract')
-  substract(@Query('a') a: number, @Query('b') b: number): number {
+  @UsePipes(ValidationPipe)
+  substract(@Query() { a, b }: AdditionDTO): number {
     return this.calculatorService.substract(a, b);
   }
 
   @Get('multiply')
-  multiply(@Query('a') a: number, @Query('b') b: number): number {
+  @UsePipes(ValidationPipe)
+  multiply(@Query() { a, b }: AdditionDTO): number {
     return this.calculatorService.multiply(a, b);
   }
 
   @Get('divide')
-  divide(@Query('a') a: number, @Query('b') b: number): number {
+  @UsePipes(ValidationPipe)
+  divide(@Query() { a, b }: AdditionDTO): number {
     return this.calculatorService.divide(a, b);
   }
 }
